@@ -44,7 +44,7 @@ router.post("/getWorkingDays", (req, res, next) => {
   const initialDate = req.body.initialDate;
   const finalDate = req.body.finalDate;
 
-  Day.find()
+  Day.countDocuments()
     .where('date').gt(initialDate).lt(finalDate)
     .where('isHoliday').equals(false)
     .where('dayName').nin(["Saturday", "Sunday"])
