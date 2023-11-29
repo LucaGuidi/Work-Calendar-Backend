@@ -17,6 +17,23 @@ router.get("/", (req, res, next) => {
     });
 });
 
+router.get("/holidays", (req, res, next) => {
+  Day.find()
+    .where("isHoliday").equals(true)
+    .sort("year")
+    .sort("month")
+    .sort("day")
+    .exec()
+    .then((result) => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ error: error });
+    });
+});
+
 router.post("/", (req, res, next) => {
   const day = new Day({
     _id: new mongoose.Types.ObjectId(),
@@ -46,12 +63,12 @@ router.post("/getWorkingDays", (req, res, next) => {
   const nonWorkingDays = req.body.nonWorkingDays;
 
   Day.countDocuments()
-    .where('date').gte(initialDate).lte(finalDate)
-    .where('isHoliday').equals(false)
-    .where('dayName').nin([...nonWorkingDays])
-    .sort('year')
-    .sort('month')
-    .sort('day')
+    .where("date").gte(initialDate).lte(finalDate)
+    .where("isHoliday").equals(false)
+    .where("dayName").nin([...nonWorkingDays])
+    .sort("year")
+    .sort("month")
+    .sort("day")
     .exec()
     .then((result) => {
       console.log(result);
